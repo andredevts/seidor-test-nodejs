@@ -5,7 +5,7 @@ import { RequestTripDTO } from "../dtos/trip.dto";
 import { AppError } from "../errors/appError";
 import { TripEntity } from "../entities/trip.entity";
 
-export class UsageService {
+export class TripService {
   constructor(
     private readonly tripRepo = new TripRepository(),
     private readonly carRepo = new CarRepository(),
@@ -27,11 +27,12 @@ export class UsageService {
 
     const activeDriver = await this.tripRepo.findActiveByDriver(data.driverId);
 
-    if (activeDriver) throw new AppError("Driver is already using a car", 409);
+    if (activeDriver) throw new AppError(`Driver with code ${activeDriver.id} is already using a car ${existingCar.id}`, 409);
 
     const start = new Date(data.startAt);
 
-    if (Number.isNaN(start.getTime())) throw new AppError("Invalid startAt date", 400);
+    if (Number.isNaN(start.getTime()))
+      throw new AppError("Invalid startAt date", 400);
 
     const payload: TripEntity = {
       carId: data.carId,
@@ -43,21 +44,22 @@ export class UsageService {
     return this.tripRepo.createTrip(payload);
   }
 
-  async finishTrip(usageId: string, endAtStr: string) {
-    const usage = await this.tripRepo.findById(usageId);
+  async finishTrip(tripId: string, endAtStr: string) {
+    const trip = await this.tripRepo.findById(tripId);
 
-    if (!usage) throw new AppError("Usage record not found", 404);
+    if (!trip) throw new AppError("Trip record not found", 404);
 
-    if (usage.endAt) throw new AppError("Usage already finished", 400);
+    if (trip.endAt) throw new AppError("Trip already finished", 400);
 
     const endAt = new Date(endAtStr);
 
-    if (Number.isNaN(endAt.getTime())) throw new AppError("Invalid endAt date", 400);
+    if (Number.isNaN(endAt.getTime()))
+      throw new AppError("Invalid endAt date", 400);
 
-    if (endAt < usage.startAt)
+    if (endAt < trip.startAt)
       throw new AppError("endAt cannot be before startAt", 400);
 
-    return this.tripRepo.updateEndAt(usageId, endAt);
+    return this.tripRepo.updateEndAt(tripId, endAt);
   }
 
   async listAll() {
@@ -65,10 +67,10 @@ export class UsageService {
   }
 
   async getTrip(id: string) {
-    const usage = await this.tripRepo.findById(id);
+    const trip = await this.tripRepo.findById(id);
 
-    if (!usage) throw new AppError("Usage not found", 404);
+    if (!trip) throw new AppError("Usage not found", 404);
 
-    return usage;
+    return trip;
   }
 }

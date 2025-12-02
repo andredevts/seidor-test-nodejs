@@ -5,7 +5,6 @@ import {
   tripFinishSchema,
 } from "../validators/trip.validator";
 import { AppError } from "../errors/appError";
-import { RequestTripDTO } from "../dtos/trip.dto";
 
 const tripService = new TripService();
 

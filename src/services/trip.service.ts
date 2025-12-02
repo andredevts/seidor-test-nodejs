@@ -12,7 +12,7 @@ export class UsageService {
     private readonly driverRepo = new DriverRepository()
   ) {}
 
-  async create(data: RequestTripDTO) {
+  async createTrip(data: RequestTripDTO) {
     const existingCar = await this.carRepo.findById(data.carId);
 
     if (!existingCar) throw new AppError("Car not found", 404);
@@ -43,7 +43,7 @@ export class UsageService {
     return this.tripRepo.createTrip(payload);
   }
 
-  async finish(usageId: string, endAtStr: string) {
+  async finishTrip(usageId: string, endAtStr: string) {
     const usage = await this.tripRepo.findById(usageId);
 
     if (!usage) throw new AppError("Usage record not found", 404);

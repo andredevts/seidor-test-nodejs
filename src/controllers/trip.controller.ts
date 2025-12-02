@@ -5,31 +5,32 @@ import {
   tripFinishSchema,
 } from "../validators/trip.validator";
 import { AppError } from "../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 const tripService = new TripService();
 
-export class UsageController {
-  static async create(req: Request, res: Response, next: NextFunction) {
+export class TripController {
+  static async createTrip(req: Request, res: Response, next: NextFunction) {
     try {
       const parsed = tripCreateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, 400);
+      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
 
       const trip = await tripService.createTrip(parsed.data);
 
-      return res.status(201).json(trip);
+      return res.status(StatusCodes.CREATED).json(trip);
     } catch (err) {
       next(err);
     }
   }
 
-  static async finish(req: Request, res: Response, next: NextFunction) {
+  static async finishTrip(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
       const parsed = tripFinishSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, 400);
+      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
 
       const finished = await tripService.finishTrip(id, parsed.data.endAt);
 
@@ -39,7 +40,7 @@ export class UsageController {
     }
   }
 
-  static async list(req: Request, res: Response, next: NextFunction) {
+  static async listAll(req: Request, res: Response, next: NextFunction) {
     try {
       const list = await tripService.listAll();
 
@@ -63,7 +64,7 @@ export class UsageController {
     }
   }
 
-  static async get(req: Request, res: Response, next: NextFunction) {
+  static async getTripById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 

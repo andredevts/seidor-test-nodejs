@@ -4,6 +4,7 @@ import { DriverRepository } from "../repositories/driver.repository";
 import { RequestTripDTO } from "../dtos/trip.dto";
 import { AppError } from "../errors/appError";
 import { TripEntity } from "../entities/trip.entity";
+import { StatusCodes } from "http-status-codes";
 
 export class TripService {
   constructor(
@@ -15,24 +16,24 @@ export class TripService {
   async createTrip(data: RequestTripDTO) {
     const existingCar = await this.carRepo.findById(data.carId);
 
-    if (!existingCar) throw new AppError("Car not found", 404);
+    if (!existingCar) throw new AppError("Car not found", StatusCodes.NOT_FOUND);
 
     const existingDriver = await this.driverRepo.findById(data.driverId);
 
-    if (!existingDriver) throw new AppError("Driver not found", 404);
+    if (!existingDriver) throw new AppError("Driver not found", StatusCodes.NOT_FOUND);
 
     const activeCar = await this.tripRepo.findActiveByCar(data.carId);
 
-    if (activeCar) throw new AppError("Car is already in use", 409);
+    if (activeCar) throw new AppError("Car is already in use", StatusCodes.CONFLICT);
 
     const activeDriver = await this.tripRepo.findActiveByDriver(data.driverId);
 
-    if (activeDriver) throw new AppError(`Driver with code ${activeDriver.id} is already using a car ${existingCar.id}`, 409);
+    if (activeDriver) throw new AppError(`Driver with code ${activeDriver.id} is already using a car ${existingCar.id}`, StatusCodes.CONFLICT);
 
     const start = new Date(data.startAt);
 
     if (Number.isNaN(start.getTime()))
-      throw new AppError("Invalid startAt date", 400);
+      throw new AppError("Invalid startAt date", StatusCodes.BAD_REQUEST);
 
     const payload: TripEntity = {
       carId: data.carId,
@@ -47,17 +48,17 @@ export class TripService {
   async finishTrip(tripId: string, endAtStr: string) {
     const trip = await this.tripRepo.findById(tripId);
 
-    if (!trip) throw new AppError("Trip record not found", 404);
+    if (!trip) throw new AppError("Trip record not found", StatusCodes.NOT_FOUND);
 
-    if (trip.endAt) throw new AppError("Trip already finished", 400);
+    if (trip.endAt) throw new AppError("Trip already finished", StatusCodes.BAD_REQUEST);
 
     const endAt = new Date(endAtStr);
 
     if (Number.isNaN(endAt.getTime()))
-      throw new AppError("Invalid endAt date", 400);
+      throw new AppError("Invalid endAt date", StatusCodes.BAD_REQUEST);
 
     if (endAt < trip.startAt)
-      throw new AppError("endAt cannot be before startAt", 400);
+      throw new AppError("endAt cannot be before startAt", StatusCodes.BAD_REQUEST);
 
     return this.tripRepo.updateEndAt(tripId, endAt);
   }
@@ -69,7 +70,7 @@ export class TripService {
   async getTrip(id: string) {
     const trip = await this.tripRepo.findById(id);
 
-    if (!trip) throw new AppError("Usage not found", 404);
+    if (!trip) throw new AppError("Usage not found", StatusCodes.NOT_FOUND);
 
     return trip;
   }

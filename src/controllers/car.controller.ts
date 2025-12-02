@@ -3,6 +3,7 @@ import { CarService } from "../services/car.service";
 import { carCreateSchema, carUpdateSchema } from "../validators/car.validator";
 import { AppError } from "../errors/appError";
 import { RequestCarDTO } from "../dtos/car.dto";
+import { StatusCodes } from "http-status-codes";
 
 const service = new CarService();
 
@@ -11,11 +12,11 @@ export class CarController {
     try {
       const parsed = carCreateSchema.safeParse(req.body);
       
-      if (!parsed.success) throw new AppError(parsed.error.message, 400);
+      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
 
-      const car = await service.createCar(parsed.data);
+      const createCar = await service.createCar(parsed.data);
 
-      return res.status(201).json(car);
+      return res.status(StatusCodes.CREATED).json(createCar);
     } catch (err) {
       next(err);
     }
@@ -27,11 +28,11 @@ export class CarController {
 
       const parsed = carUpdateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, 400);
+      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
 
-      const updated = await service.updateCar(id, parsed.data);
+      const updatedCar = await service.updateCar(id, parsed.data);
 
-      return res.json(updated);
+      return res.status(StatusCodes.OK).json(updatedCar);
     } catch (err) {
       next(err);
     }
@@ -41,9 +42,9 @@ export class CarController {
     try {
       const { id } = req.params;
 
-      await service.deleteCarById(id);
+      const deletedCar = await service.deleteCarById(id);
 
-      return res.status(204).send();
+      return res.status(StatusCodes.OK).json(deletedCar);
     } catch (err) {
       next(err);
     }
@@ -53,9 +54,9 @@ export class CarController {
     try {
       const { id } = req.params;
 
-      const car = await service.getCarById(id);
+      const getCar = await service.getCarById(id);
 
-      return res.json(car);
+      return res.status(StatusCodes.OK).json(getCar);
     } catch (err) {
       next(err);
     }
@@ -71,9 +72,9 @@ export class CarController {
 
       if (brand) filters.brand = brand as string;
 
-      const list = await service.listAll(filters);
+      const listAllCars = await service.listAll(filters);
 
-      return res.json(list);
+      return res.status(StatusCodes.OK).json(listAllCars);
     } catch (err) {
       next(err);
     }

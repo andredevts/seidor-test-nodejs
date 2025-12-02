@@ -1,6 +1,7 @@
 import { DriverRepository } from "../repositories/driver.repository";
 import { RequestDriverDTO, DomainDriverDTO } from "../dtos/driver.dto";
 import { AppError } from "../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 export class DriverService {
   constructor(private readonly repo = new DriverRepository()) {}
@@ -12,7 +13,7 @@ export class DriverService {
   async updateDriver(id: string, data: RequestDriverDTO) {
     const existingDriver = await this.repo.findById(id);
 
-    if (!existingDriver) throw new AppError("Driver not found", 404);
+    if (!existingDriver) throw new AppError("Driver not found", StatusCodes.NOT_FOUND);
 
     const updateDriver: DomainDriverDTO = {
       name: data.name,
@@ -24,7 +25,7 @@ export class DriverService {
   async deleteDriverById(id: string) {
     const existingDriver = await this.repo.findById(id);
 
-    if (!existingDriver) throw new AppError("Driver not found", 404);
+    if (!existingDriver) throw new AppError("Driver not found", StatusCodes.NOT_FOUND);
 
     return this.repo.deleteDriver(id);
   }
@@ -32,7 +33,7 @@ export class DriverService {
   async getDriverById(id: string) {
     const existingDriver = await this.repo.findById(id);
 
-    if (!existingDriver) throw new AppError("Driver not found", 404);
+    if (!existingDriver) throw new AppError("Driver not found", StatusCodes.NOT_FOUND);
 
     return existingDriver;
   }

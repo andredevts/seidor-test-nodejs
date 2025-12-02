@@ -5,65 +5,68 @@ import {
   driverUpdateSchema,
 } from "../validators/driver.validator";
 import { AppError } from "../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 const service = new DriverService();
 
 export class DriverController {
-  static async create(req: Request, res: Response, next: NextFunction) {
+  static async createDriver(req: Request, res: Response, next: NextFunction) {
     try {
       const parsed = driverCreateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, 400);
+      if (!parsed.success)
+        throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
 
       const driver = await service.createDriver(parsed.data);
 
-      return res.status(201).json(driver);
+      return res.status(StatusCodes.CREATED).json(driver);
     } catch (err) {
       next(err);
     }
   }
 
-  static async update(req: Request, res: Response, next: NextFunction) {
+  static async updateDriver(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
       const parsed = driverUpdateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, 400);
+      if (!parsed.success)
+        throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
 
       const updated = await service.updateDriver(id, parsed.data);
 
-      return res.json(updated);
+      return res.status(StatusCodes.OK).json(updated);
     } catch (err) {
       next(err);
     }
   }
 
-  static async remove(req: Request, res: Response, next: NextFunction) {
+  static async deleteDriver(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
-      await service.deleteDriverById(id);
+      const deletedCar = await service.deleteDriverById(id);
 
-      return res.status(204).send();
+      return res.status(StatusCodes.OK).send(deletedCar);
     } catch (err) {
       next(err);
     }
   }
 
-  static async get(req: Request, res: Response, next: NextFunction) {
+  static async getDriver(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
       const driver = await service.getDriverById(id);
 
-      return res.json(driver);
+      return res.status(StatusCodes.OK).send(driver);
     } catch (err) {
       next(err);
     }
   }
 
-  static async list(req: Request, res: Response, next: NextFunction) {
+  static async listAll(req: Request, res: Response, next: NextFunction) {
     try {
       const { name } = req.query;
 
@@ -71,9 +74,9 @@ export class DriverController {
 
       if (name) filter.name = String(name);
 
-      const list = await service.listAll(filter);
+      const listAllDrivers = await service.listAll(filter);
 
-      return res.json(list);
+      return res.status(StatusCodes.OK).send(listAllDrivers);
     } catch (err) {
       next(err);
     }

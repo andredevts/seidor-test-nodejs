@@ -41,7 +41,7 @@ export class CarService {
     return this.repo.updateCar(id, updatedCar);
   }
 
-  async deleteCar(id: string) {
+  async deleteCarById(id: string) {
     const existingCar = await this.repo.findById(id);
 
     if (!existingCar) throw new AppError("Car not found", 404);

@@ -21,7 +21,7 @@ export class DriverService {
     return this.repo.updateDriver(id, updateDriver);
   }
 
-  async deleteDriver(id: string) {
+  async deleteDriverById(id: string) {
     const existingDriver = await this.repo.findById(id);
 
     if (!existingDriver) throw new AppError("Driver not found", 404);
@@ -29,7 +29,7 @@ export class DriverService {
     return this.repo.deleteDriver(id);
   }
 
-  async getDriver(id: string) {
+  async getDriverById(id: string) {
     const existingDriver = await this.repo.findById(id);
 
     if (!existingDriver) throw new AppError("Driver not found", 404);

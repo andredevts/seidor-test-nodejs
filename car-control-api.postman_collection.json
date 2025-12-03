@@ -1,0 +1,216 @@
+{
+  "info": {
+    "name": "Car Control API",
+    "_postman_id": "e4a18abc-0fd8-4f86-8725-f48271ae7d01",
+    "description": "Coleção para testar Car, Driver e Trip",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Car",
+      "item": [
+        {
+          "name": "Create Car",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plate\": \"ABC1234\",\n  \"color\": \"black\",\n  \"brand\": \"Toyota\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/cars",
+              "host": ["{{base_url}}"],
+              "path": ["cars"]
+            }
+          }
+        },
+        {
+          "name": "List All Cars",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/cars",
+              "host": ["{{base_url}}"],
+              "path": ["cars"]
+            }
+          }
+        },
+        {
+          "name": "Get Car By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/cars/:id",
+              "host": ["{{base_url}}"],
+              "path": ["cars", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Update Car",
+          "request": {
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"color\": \"blue\",\n  \"brand\": \"Honda\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/cars/:id",
+              "host": ["{{base_url}}"],
+              "path": ["cars", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Car",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/cars/:id",
+              "host": ["{{base_url}}"],
+              "path": ["cars", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Driver",
+      "item": [
+        {
+          "name": "Create Driver",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers",
+              "host": ["{{base_url}}"],
+              "path": ["drivers"]
+            }
+          }
+        },
+        {
+          "name": "List Drivers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/drivers",
+              "host": ["{{base_url}}"],
+              "path": ["drivers"]
+            }
+          }
+        },
+        {
+          "name": "Get Driver By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/drivers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["drivers", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver",
+          "request": {
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["drivers", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Driver",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/drivers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["drivers", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trip",
+      "item": [
+        {
+          "name": "Create Trip",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carId\": \"car-id-here\",\n  \"driverId\": \"driver-id-here\",\n  \"reason\": \"Business meeting\",\n  \"startAt\": \"2025-01-01T10:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/trips",
+              "host": ["{{base_url}}"],
+              "path": ["trips"]
+            }
+          }
+        },
+        {
+          "name": "Finish Trip",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"endAt\": \"2025-01-01T12:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/trips/:id/finish",
+              "host": ["{{base_url}}"],
+              "path": ["trips", ":id", "finish"]
+            }
+          }
+        },
+        {
+          "name": "List All Trips",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/trips",
+              "host": ["{{base_url}}"],
+              "path": ["trips"]
+            }
+          }
+        },
+        {
+          "name": "Get Trip By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/trips/:id",
+              "host": ["{{base_url}}"],
+              "path": ["trips", ":id"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    }
+  ]
+}

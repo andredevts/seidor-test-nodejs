@@ -6,6 +6,7 @@ import {
 } from "../validators/trip.validator";
 import { AppError } from "../errors/appError";
 import { StatusCodes } from "http-status-codes";
+import { RequestTripDTO } from "../dtos/trip.dto";
 
 const tripService = new TripService();
 
@@ -14,9 +15,17 @@ export class TripController {
     try {
       const parsed = tripCreateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
+      if (!parsed.success)
+        throw new AppError("Field invalid", StatusCodes.BAD_REQUEST);
 
-      const trip = await tripService.createTrip(parsed.data);
+      const dto: RequestTripDTO = {
+        carId: parsed.data.carId,
+        driverId: parsed.data.driverId,
+        startAt: parsed.data.startAt,
+        reason: parsed.data.reason,
+      };
+
+      const trip = await tripService.createTrip(dto);
 
       return res.status(StatusCodes.CREATED).json(trip);
     } catch (err) {
@@ -30,7 +39,8 @@ export class TripController {
 
       const parsed = tripFinishSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
+      if (!parsed.success)
+        throw new AppError("Field invalid", StatusCodes.BAD_REQUEST);
 
       const finished = await tripService.finishTrip(id, parsed.data.endAt);
 
@@ -42,19 +52,19 @@ export class TripController {
 
   static async listAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const list = await tripService.listAll();
+      const listTrip = await tripService.listAll();
 
-      const mapped = list.map((u: any) => ({
-        id: u.id,
-        startAt: u.startAt,
-        endAt: u.endAt,
-        reason: u.reason,
-        driver: { id: u.driver.id, name: u.driver.name },
+      const mapped = listTrip.map((trip: any) => ({
+        id: trip.id,
+        startAt: trip.startAt,
+        endAt: trip.endAt,
+        reason: trip.reason,
+        driver: { id: trip.driver.id, name: trip.driver.name },
         car: {
-          id: u.car.id,
-          plate: u.car.plate,
-          brand: u.car.brand,
-          color: u.car.color,
+          id: trip.car.id,
+          plate: trip.car.plate,
+          brand: trip.car.brand,
+          color: trip.car.color,
         },
       }));
 

@@ -4,7 +4,7 @@ import { carCreateSchema, carUpdateSchema } from "../validators/car.validator";
 import { AppError } from "../errors/appError";
 import { RequestCarDTO } from "../dtos/car.dto";
 import { StatusCodes } from "http-status-codes";
-import { driverUpdateSchema } from '../validators/driver.validator';
+import { driverUpdateSchema } from "../validators/driver.validator";
 
 const service = new CarService();
 
@@ -12,10 +12,17 @@ export class CarController {
   static async createCar(req: Request, res: Response, next: NextFunction) {
     try {
       const parsed = carCreateSchema.safeParse(req.body);
-      
-      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
 
-      const createCar = await service.createCar(parsed.data);
+      if (!parsed.success)
+        throw new AppError("Field invalid", StatusCodes.BAD_REQUEST);
+
+      const dto: RequestCarDTO = {
+        plate: parsed.data.plate,
+        color: parsed.data.color,
+        brand: parsed.data.brand,
+      };
+
+      const createCar = await service.createCar(dto);
 
       return res.status(StatusCodes.CREATED).json(createCar);
     } catch (err) {
@@ -29,9 +36,16 @@ export class CarController {
 
       const parsed = carUpdateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
+      if (!parsed.success)
+        throw new AppError("Field invalid", StatusCodes.BAD_REQUEST);
 
-      const updatedCar = await service.updateCar(id, parsed.data);
+      const dto: RequestCarDTO = {
+        plate: parsed.data.plate,
+        color: parsed.data.color,
+        brand: parsed.data.brand,
+      };
+
+      const updatedCar = await service.updateCar(id, dto);
 
       return res.status(StatusCodes.OK).json(updatedCar);
     } catch (err) {

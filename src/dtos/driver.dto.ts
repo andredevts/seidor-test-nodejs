@@ -9,4 +9,6 @@ export interface RequestDriverDTO {
 export interface ResponseDriverDTO {
   id: string;
   name: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

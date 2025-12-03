@@ -6,6 +6,7 @@ import {
 } from "../validators/driver.validator";
 import { AppError } from "../errors/appError";
 import { StatusCodes } from "http-status-codes";
+import { RequestDriverDTO } from "../dtos/driver.dto";
 
 const service = new DriverService();
 
@@ -15,9 +16,13 @@ export class DriverController {
       const parsed = driverCreateSchema.safeParse(req.body);
 
       if (!parsed.success)
-        throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
+        throw new AppError("Field invalid", StatusCodes.BAD_REQUEST);
 
-      const driver = await service.createDriver(parsed.data);
+      const dto: RequestDriverDTO = {
+        name: parsed.data.name,
+      };
+
+      const driver = await service.createDriver(dto);
 
       return res.status(StatusCodes.CREATED).json(driver);
     } catch (err) {
@@ -32,9 +37,13 @@ export class DriverController {
       const parsed = driverUpdateSchema.safeParse(req.body);
 
       if (!parsed.success)
-        throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
+        throw new AppError("Field invalid", StatusCodes.BAD_REQUEST);
 
-      const updated = await service.updateDriver(id, parsed.data);
+      const dto: RequestDriverDTO = {
+        name: parsed.data.name,
+      };
+
+      const updated = await service.updateDriver(id, dto);
 
       return res.status(StatusCodes.OK).json(updated);
     } catch (err) {
@@ -70,7 +79,7 @@ export class DriverController {
     try {
       const { name } = req.query;
 
-      const filter: any = {};
+      const filter: RequestDriverDTO = {};
 
       if (name) filter.name = String(name);
 

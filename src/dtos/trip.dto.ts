@@ -7,6 +7,7 @@ export interface RequestTripDTO {
   driverId: string;
   startAt: string;
   reason: string;
+  endAt?: string;
 }
 
 export interface ResponseTripDTO {
@@ -16,4 +17,18 @@ export interface ResponseTripDTO {
   startAt: string;
   endAt?: string;
   reason: string;
+  driver: {
+    id: string;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  car: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    plate: string;
+    color: string;
+    brand: string;
+  };
 }

@@ -15,7 +15,7 @@ export class DriverController {
       const parsed = driverCreateSchema.safeParse(req.body);
 
       if (!parsed.success)
-        throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
+        throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
 
       const driver = await service.createDriver(parsed.data);
 
@@ -32,7 +32,7 @@ export class DriverController {
       const parsed = driverUpdateSchema.safeParse(req.body);
 
       if (!parsed.success)
-        throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
+        throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
 
       const updated = await service.updateDriver(id, parsed.data);
 

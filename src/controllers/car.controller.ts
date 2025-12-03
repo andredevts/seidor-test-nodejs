@@ -4,6 +4,7 @@ import { carCreateSchema, carUpdateSchema } from "../validators/car.validator";
 import { AppError } from "../errors/appError";
 import { RequestCarDTO } from "../dtos/car.dto";
 import { StatusCodes } from "http-status-codes";
+import { driverUpdateSchema } from '../validators/driver.validator';
 
 const service = new CarService();
 
@@ -12,7 +13,7 @@ export class CarController {
     try {
       const parsed = carCreateSchema.safeParse(req.body);
       
-      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
+      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
 
       const createCar = await service.createCar(parsed.data);
 
@@ -28,7 +29,7 @@ export class CarController {
 
       const parsed = carUpdateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
+      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
 
       const updatedCar = await service.updateCar(id, parsed.data);
 

@@ -9,7 +9,7 @@ export const tripCreateSchema = z.object({
       message: "startAt must be an ISO date string",
     }),
   reason: z.string().min(10),
-});
+}).strict();
 
 export const tripFinishSchema = z.object({
   endAt: z
@@ -17,4 +17,4 @@ export const tripFinishSchema = z.object({
     .refine((s) => !Number.isNaN(Date.parse(s)), {
       message: "endAt must be an ISO date string",
     }),
-});
+}).strict();

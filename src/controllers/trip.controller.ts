@@ -14,7 +14,7 @@ export class TripController {
     try {
       const parsed = tripCreateSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
+      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
 
       const trip = await tripService.createTrip(parsed.data);
 
@@ -30,7 +30,7 @@ export class TripController {
 
       const parsed = tripFinishSchema.safeParse(req.body);
 
-      if (!parsed.success) throw new AppError(parsed.error.message, StatusCodes.BAD_REQUEST);
+      if (!parsed.success) throw new AppError('Field invalid', StatusCodes.BAD_REQUEST);
 
       const finished = await tripService.finishTrip(id, parsed.data.endAt);
 

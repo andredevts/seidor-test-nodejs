@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 export function errorHandler(
   err: Error,
@@ -13,5 +14,5 @@ export function errorHandler(
 
   console.error(err);
 
-  return res.status(StatusCodes.CREATED).json({ message: "Internal server error" });
+  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
 }

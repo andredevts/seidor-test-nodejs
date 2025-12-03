@@ -4,35 +4,36 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Car {
-  id        String   @id @default(cuid(2))
+  id        String   @id @default(cuid())
   plate     String   @unique
   color     String
   brand     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  trips    Trip[]
+  trips     Trip[]
 }
 
 model Driver {
-  id        String   @id @default(cuid(2))
+  id        String   @id @default(cuid())
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  trips    Trip[]
+  trips     Trip[]
 }
 
 model Trip {
-  id         String   @id @default(cuid(2))
-  startAt    DateTime
-  endAt      DateTime?
-  reason     String
-  carId      String
-  driverId   String
-  car        Car      @relation(fields: [carId], references: [id])
-  driver     Driver   @relation(fields: [driverId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String    @id @default(cuid())
+  startAt   DateTime
+  endAt     DateTime?
+  reason    String
+  carId     String
+  driverId  String
+  car       Car       @relation(fields: [carId], references: [id])
+  driver    Driver    @relation(fields: [driverId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }

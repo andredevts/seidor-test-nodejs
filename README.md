@@ -31,6 +31,14 @@ npm run prisma:migrate
 npm run dev
 ````
 
+### Para testar a API
+
+Você pode usar a collection que deixei pronto para importar no **Postman**!
+
+```bash
+car-control-api.postman_collection.json
+```
+
 ### Comandos para teste com Vitest
 
 ```bash

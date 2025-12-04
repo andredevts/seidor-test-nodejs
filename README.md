@@ -19,21 +19,17 @@ O projeto segue um padrão de arquitetura **organizada por responsabilidade**, s
 
 ---
 
-### Comandos úteis do Prisma
-
-```bash
-npm run prisma:generate
-
-npm run prisma:migrate
-````
-
-### Comandos para rodar a aplicação
+## Como Rodar a aplicação?
 
 ```bash
 npm install
 
+npm run prisma:generate
+
+npm run prisma:migrate
+
 npm run dev
-```
+````
 
 ### Comandos para teste com Vitest
 

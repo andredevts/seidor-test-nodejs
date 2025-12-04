@@ -1,22 +1,24 @@
 export interface DomainTripDTO {
-  endAt?: string;
+  endAt?: Date;
 }
 
 export interface RequestTripDTO {
   carId: string;
   driverId: string;
-  startAt: string;
   reason: string;
-  endAt?: string;
+  startAt: Date;
+  endAt?: Date;
 }
 
 export interface ResponseTripDTO {
   id: string;
   carId: string;
   driverId: string;
-  startAt: string;
-  endAt?: string;
+  startAt: Date;
+  endAt?: Date;
   reason: string;
+  createdAt: Date;
+  updatedAt: Date;
   driver: {
     id: string;
     name: string;

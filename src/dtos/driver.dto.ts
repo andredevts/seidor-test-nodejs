@@ -1,9 +1,9 @@
 export interface DomainDriverDTO {
-  name?: string;
+  name: string;
 }
 
 export interface RequestDriverDTO {
-  name?: string;
+  name: string;
 }
 
 export interface ResponseDriverDTO {

@@ -1,13 +1,11 @@
 import { PrismaSingleton } from "../infra/prismaClient";
-import {
-  RequestDriverDTO,
-  DomainDriverDTO,
-} from "../dtos/driver.dto";
+import { DomainDriverDTO } from "../dtos/driver.dto";
+import { DriverEntity } from "../entities/driver.entity";
 
 export class DriverRepository {
   private readonly prisma = PrismaSingleton.getSession();
 
-  async createDriver(data: RequestDriverDTO) {
+  async createDriver(data: DriverEntity) {
     return this.prisma.driver.create({ data });
   }
 

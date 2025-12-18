@@ -1,8 +1,7 @@
-# SEIDOR – Backend Node.js Test
-
-Projeto desenvolvido como solução para o desafio técnico da vaga de **Desenvolvedor Backend** na SEIDOR.
+## Ideia
 
 Este repositório apresenta uma API construída com **Node.js + TypeScript**, utilizando **Prisma ORM**, **Express**, **Zod** para validação e **Vitest** para testes unitários.  
+
 A arquitetura foi pensada para ser simples, escalável e alinhada às boas práticas do mercado backend.
 
 ---
